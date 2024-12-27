@@ -1,0 +1,67 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="mt-4 d-flex justify-content-center">
+    <div class="w-100">
+        <h1>@ViewData["Title"]</h1>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>Create a new account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Name</h4>
+                <input asp-for="Input.Name" aria-required="true" placeholder="Name" />
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Phone Number</h4>
+                <input asp-for="Input.PhoneNumber" aria-required="true" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Address</h4>
+                <textarea asp-for="Input.Address" aria-required="true" >
+
+                </textarea>
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Post Code</h4>
+                <input asp-for="Input.PostCode" aria-required="true" />
+                <span asp-validation-for="Input.PostCode" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Email</h4>
+                <input asp-for="Input.Email" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Password</h4>
+                <input asp-for="Input.Password" aria-required="true" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <h4 class="text-xl mt-4">Confirm Password</h4>
+                <input asp-for="Input.ConfirmPassword" aria-required="true" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-floating mb-3">
+                    <select asp-for="Input.Role" class="form-select" asp-items="@(ViewData["Roles"] as IEnumerable<SelectListItem>)">
+                        <option selected disabled>Select Role</option>
+                    </select>
+                    <span asp-validation-for="Input.Role" class="text-danger"></span>
+                </div>
+            }
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

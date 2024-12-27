@@ -1,0 +1,28 @@
+﻿:root {
+    --bs-primary: #EB3030;
+    --bs-primary-rgb: 235, 48, 48;
+}
+
+input[type="text"], input[type="number"], input[type="time"], input[type="password"], input[type="email"], input[type="tel"], textarea {
+    width: 100%;
+    border: 1px solid #000000;
+    margin: 0.5rem 0rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 1.5rem;
+}
+
+button {
+    background: rgb(209 213 219);
+}
+
+button.btn-primary {
+    padding: 0.5rem;
+    width: 100%;
+    color: white;
+    border-radius: 1.5rem;
+}
+
+.hover-badge {
+    top: 0rem;
+    right: 1.5rem;
+}
