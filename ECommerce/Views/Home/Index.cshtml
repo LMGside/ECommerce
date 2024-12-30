@@ -2,7 +2,55 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .section-bg{
+        background-image: url(images/banner-image-bg.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 350px;
+        
+    }
+</style>
+
+<section class="position-relative align-items-center py-5 section-bg -mt-3">
+    <div id="slideShow" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#slideShow" data-slide-to="0" class="active"></li>
+            <li data-target="#slideShow" data-slide-to="1"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-interval="2000">
+                <div class="p-5 text-center">
+                    <h1>My Header</h1>
+                    <p>Discounts will be available soon. Come shop with us!</p>
+                    <button class="btn btn-danger rounded-pill">Shop Product</button>
+                </div>
+            </div>
+            <div class="carousel-item" data-interval="2000">
+                <div class="p-5 text-center">
+                    <h1>We have a new store!!</h1>
+                    <p>Click below to get location</p>
+                    <button class="btn btn-info rounded-pill">Contact Us</button>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#slideShow" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon text-black" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#slideShow" role="button" data-slide="next">
+            <span class="carousel-control-next-icon text-black" aria-hidden="true"></span>
+        </a>
+    </div>
+</section>
+
+
+<div class="container">
+    <div class="my-3">
+        @* <div class="tab-content" id="tabContent">
+            <div class="tab">
+
+            </div>
+        </div> *@
+    </div>
 </div>

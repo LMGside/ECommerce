@@ -1,4 +1,5 @@
 using ECommerce.Models;
+using ECommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +8,18 @@ namespace ECommerce.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHomeRepository _homeRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository)
         {
             _logger = logger;
+            _homeRepository = homeRepository;
         }
 
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            IEnumerable<Product> product = await _homeRepository.GetNewlyAddedProducts();
             return View();
         }
 

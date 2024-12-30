@@ -1,6 +1,8 @@
 ﻿:root {
     --bs-primary: #EB3030;
     --bs-primary-rgb: 235, 48, 48;
+    --body-font: "Open Sans", sans-serif;
+    --heading-font: "Nunito", sans-serif;
 }
 
 input[type="text"], input[type="number"], input[type="time"], input[type="password"], input[type="email"], input[type="tel"], textarea {
@@ -25,4 +27,11 @@ button.btn-primary {
 .hover-badge {
     top: 0rem;
     right: 1.5rem;
+}
+
+.product-item {
+    position: relative;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 16px;
 }
