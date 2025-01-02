@@ -1,4 +1,5 @@
 using ECommerce.Models;
+using ECommerce.Models.DisplayModels;
 using ECommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -20,7 +21,15 @@ namespace ECommerce.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Product> product = await _homeRepository.GetNewlyAddedProducts();
-            return View();
+
+            product = product.Take(4);
+
+            ProductList list = new ProductList()
+            {
+                Products = product
+            };
+
+            return View(list);
         }
 
         [Route("privacy")]

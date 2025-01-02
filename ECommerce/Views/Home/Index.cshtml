@@ -1,17 +1,9 @@
-﻿@{
+﻿@using ECommerce.Models.DisplayModels;
+@model ProductList
+
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<style>
-    .section-bg{
-        background-image: url(images/banner-image-bg.jpg);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        height: 350px;
-        
-    }
-</style>
 
 <section class="position-relative align-items-center py-5 section-bg -mt-3">
     <div id="slideShow" class="carousel slide" data-ride="carousel">
@@ -46,11 +38,34 @@
 
 
 <div class="container">
-    <div class="my-3">
-        @* <div class="tab-content" id="tabContent">
-            <div class="tab">
+    <div class="my-3" style="min-height: 100vh">
+        <h3 class="largeText fw-bold py-5">Product Overview</h3>
+        <div class="row">
+            @foreach(var product in Model.Products)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="product-item shadow-sm">
+                        <span class="badge bg-success position-absolute m-3">-@product.DiscountPercentage%</span>
+                        <a class="btn-wishlist bi bi-heart" style="font-size: 24px"></a>
+                        <img src="images/top-img1.jpg" class="product-image" />
+                        
+                        <h6 class="fw-bold text-truncate mt-3">@product.ProductName</h6>
+                        <div class="mt-2 d-flex gap-2">
+                            <h6 class="text-black-50 text-decoration-line-through">R @product.OldPrice</h6>
+                            <h6 class="text-black">R @product.Price</h6>
+                        </div>
+                    </div>
+                </div>
+            }
 
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="h-100 text-center align-content-center">
+                    <button class="product-btn btn btn-outline-dark">View All</button>
+                </div>
             </div>
-        </div> *@
+        </div>
+    </div>
+    <div>
+
     </div>
 </div>

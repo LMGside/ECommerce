@@ -5,29 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
-    [Table("Cart")]
-    public class Cart
+    [Table("Shopping")]
+    public class ShoppingCart
     {
-        [Key]
-        [Required]
-        public int CartId { get; set; }
-        [Required]
         public int ShoppingCartId { get; set; }
-        [Required]
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
         [Required]
         [ForeignKey("ApplicationUser")]
         public string UserId { get; set; }
-        [Required]
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow.AddHours(2);
+
+        public bool IsDeleted { get; set; } = false;
 
         [ValidateNever]
-        public Product Product { get; set; }
+        public ICollection<Cart> Carts { get; set; }
 
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
-        [ValidateNever]
-        public ShoppingCart ShoppingCart { get; set; }
     }
 }

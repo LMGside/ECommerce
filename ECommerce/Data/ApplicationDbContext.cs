@@ -20,7 +20,9 @@ namespace ECommerce.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
     }
 }
