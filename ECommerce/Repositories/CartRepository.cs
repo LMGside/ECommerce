@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace ECommerce.Repositories
 {
-    public class CartRepository
+    public class CartRepository : ICartRepository
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -19,12 +19,143 @@ namespace ECommerce.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<int> AddItem(int productId, int quantity)
+        {
+            string userID = GetUserId();
+            //using var transaction = _db.Database.BeginTransaction();
+            try
+            {
+                // Check Cart or Create Cart
+                if (string.IsNullOrEmpty(userID))
+                {
+                    throw new Exception("User Is not Found");
+                }
+                var cart = await GetShoppingCart(userID);
+                if (cart == null)
+                {
+                    cart = new ShoppingCart
+                    {
+                        UserId = userID
+                    };
+                    _db.ShoppingCarts.Add(cart);
+                }
+                _db.SaveChanges();
+
+                // Cart Details
+                var cartItem = _db.Carts.FirstOrDefault(a => a.ShoppingCartId == cart.ShoppingCartId && a.ProductId == productId);
+                var productItem = _db.Products.FirstOrDefault(s => s.ProductId == productId);
+
+                if (cartItem != null)
+                {
+                    if (productItem != null)
+                    {
+                        if (productItem.Quantity > cartItem.Quantity)
+                        {
+                            cartItem.Quantity += quantity;
+                        }
+                    }
+                }
+                else
+                {
+                    var stock = _db.Products.Find(productId);
+                    cartItem = new Cart
+                    {
+                        ProductId = productId,
+                        Quantity = quantity,
+                        ShoppingCartId = cart.ShoppingCartId,
+                        CreatedDate = DateTime.Now,
+                        UserId = userID
+                    };
+
+                    _db.Carts.Add(cartItem);
+                }
+                _db.SaveChanges();
+                //transaction.Commit();
+
+            }
+            catch (Exception ex)
+            {
+                var errorLog = new ErrorLog
+                {
+                    ErrorMsg = ex.Message,
+                    Exception = ex.ToString(),
+                    StackTrace = ex.StackTrace,
+                    CreatedDate = DateTime.Now
+                };
+
+                _db.ErrorLogs.Add(errorLog);
+                _db.SaveChanges();
+            }
+
+            var cartItemCount = await GetCartItemCount(userID);
+            return cartItemCount;
+        }
+
+        public async Task<int> RemoveItem(int productId)
+        {
+            string userID = GetUserId();
+            //using var transaction = _db.Database.BeginTransaction();
+            try
+            {
+                // Check Cart or Create Cart
+
+                if (string.IsNullOrEmpty(userID))
+                {
+                    throw new Exception("User is not logged in");
+                }
+                var cart = await GetShoppingCart(userID);
+                if (cart == null)
+                {
+                    throw new Exception("Cart is Empty");
+                }
+
+                // Cart Details
+                var cartItem = _db.Carts.FirstOrDefault(a => a.ShoppingCartId == cart.ShoppingCartId && a.ProductId == productId);
+                if (cartItem == null)
+                {
+                    throw new Exception("No Item in Cart");
+                }
+                else if (cartItem.Quantity == 1)
+                {
+                    _db.Carts.Remove(cartItem);
+                }
+                else
+                {
+                    cartItem.Quantity = cartItem.Quantity - 1;
+                }
+                _db.SaveChanges();
+                //transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                var errorLog = new ErrorLog
+                {
+                    ErrorMsg = ex.Message,
+                    Exception = ex.ToString(),
+                    StackTrace = ex.StackTrace,
+                    CreatedDate = DateTime.Now
+                };
+
+                _db.ErrorLogs.Add(errorLog);
+                _db.SaveChanges();
+            }
+
+            var cartItemCount = await GetCartItemCount(userID);
+            return cartItemCount;
+
+        }
+
         public async Task<ShoppingCart> GetUserCart()
         {
             var userId = GetUserId();
             if (userId == null)
             {
-                throw new Exception("Invalid User");
+                var noUser = new ShoppingCart()
+                {
+                    UserId = ""
+                };
+
+                return noUser;
             }
 
             var shoppingCart = await _db.ShoppingCarts

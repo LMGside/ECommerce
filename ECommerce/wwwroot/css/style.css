@@ -9,7 +9,7 @@ input[type="text"], input[type="number"], input[type="time"], input[type="passwo
     width: 100%;
     border: 1px solid #000000;
     margin: 0.5rem 0rem;
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 1.5rem;
 }
 
@@ -75,6 +75,14 @@ button.btn-primary {
     background-repeat: no-repeat;
     background-position: center;
     height: 350px;
+}
+
+.header-bg {
+    background-image: url(../images/banner-image-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200px;
 }
 
 .largeText {

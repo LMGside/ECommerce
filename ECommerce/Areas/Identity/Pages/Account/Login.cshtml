@@ -2,7 +2,7 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Login";
 }
 
 @* <div class="row">
@@ -46,23 +46,33 @@
         </section>
     </div>
 </div> *@
-<div class="row">
-    <div class="mt-4 d-flex justify-content-center">
-        <div>
-            <h1 class="text-center mb-4">Login</h1>
-            <section>
-                <form id="account" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <input asp-for="Input.Email" type="email" placeholder="your@email.com" />
-                    <input asp-for="Input.Password" type="password" placeholder="password" />
-                    <button id="login-submit" type="submit" class="btn btn-primary w-100">Login</button>
-                    <div class="text-center py-2 text-black-50">
-                        Don't have an account yet?
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register Now</a>
-                    </div>
-                </form>
-            </section>
+
+<section class="position-relative align-items-center py-3 header-bg -mt-3">
+    <div id="slideShow" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="p-5 text-center">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+            </div>
         </div>
+    </div>
+</section>
+
+<div class="row">
+    <div class="mt-5 d-flex justify-content-center">
+        <section>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <input asp-for="Input.Email" type="email" placeholder="your@email.com" />
+                <input asp-for="Input.Password" type="password" placeholder="password" />
+                <button id="login-submit" type="submit" class="btn btn-primary w-100">Login</button>
+                <div class="text-center py-2 text-black-50">
+                    Don't have an account yet?
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register Now</a>
+                </div>
+            </form>
+        </section>
     </div>
 </div>
 

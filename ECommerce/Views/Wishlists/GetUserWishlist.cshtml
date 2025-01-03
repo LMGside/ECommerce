@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Wishlist>
+
+@{
+    ViewData["Title"] = "Wish List";
+}
+
+<section class="position-relative align-items-center py-3 header-bg -mt-3">
+    <div id="slideShow" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="p-5 text-center">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if(Model.Count() > 0)
+{
+    <div class="bg-light py-3 px-5">
+        <p>THERE IS A WISH LIST</p>
+    </div>
+}
+else
+{
+    <div class="bg-light py-3 px-5">
+        <p>THERE IS NO WISH LIST</p>
+    </div>
+}
+
+<div class="mt-5">
+    <div class="container">
+        <div class="py-3 px-5 bg-opacity-50 bg-warning d-flex gap-2">
+            <i class="bi bi-lock" style="font-size: 30px"></i>
+            <div class="align-content-center">
+                <span>
+                    You are not logged on. To view your wishlist, login
+                    <a asp-area="Identity" asp-page="/Account/Login">here</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="mt-5 card rounded-2 bg-black bg-opacity-10">
+        <div class="card-body align-content-center" style="height: 50vh">
+            <div class="text-center d-flex flex-column gap-3">
+                <h2>Wish list empty</h2>
+                <p>Start planning what gifts you'd want!</p>
+                <a class="mt-2 btn btn-primary m-auto" asp-area="" asp-controller="Home" asp-action="Index">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+</div>
