@@ -50,10 +50,23 @@ namespace ECommerce.Controllers
             return View();
         }
 
-        [Route("products/{id?}")]
+        [Route("{id?}")]
         public async Task<IActionResult> ProductDetails(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.SubCategory)
+                .FirstOrDefaultAsync(m => m.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
         }
 
         // GET: Products/Details/5
