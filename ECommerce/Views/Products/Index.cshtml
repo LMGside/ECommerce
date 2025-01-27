@@ -1,12 +1,107 @@
-﻿@model IEnumerable<ECommerce.Models.Product>
+﻿@{
+    ViewData["Title"] = "Products";
+    List<string> listNum = new List<string>();
 
-@{
-    ViewData["Title"] = "Index";
+    var data = ViewBag.Products;
+    var sort = ViewBag.Sort;
+
+    for(var i = 1; i <= data.PageCount; i++){
+        listNum.Add(i.ToString());
+    }
 }
 
-<h1>Index</h1>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
 
-<p>
+<style>
+    .pagination{
+        border: 1px solid;
+        border-radius: 10px;
+    }
+
+    .pagination li {
+        display: flex;
+        padding: 8px 16px;
+        list-style: none;
+        border-right: 1px solid #0f0a0a;
+        border-radius: 10px;
+    }
+
+    .pagination li.active {
+        background-color: red;
+        color: #000000;
+    }
+
+    .pagination li:hover:not(.active) {
+        background-color: #ddd;
+    }
+</style>
+
+<partial name="_PageHeader" />
+
+<div class="container">
+    <div class="my-3" style="min-height: 100vh">
+        <h3 class="largeText fw-bold py-2">Products</h3>
+        <div class="d-flex py-2">
+            <label class="align-content-center">Sort By: </label>
+            <div class="p-2">
+                <select id="sortBy" class="form-select" onchange="sortChange()">
+                    <option value="0">Newest</option>
+                    <option value="1">Price Low to High</option>
+                    <option value="2">Price High to Low</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var product in ViewBag.Products)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="product-item shadow-sm">
+                        <span class="badge bg-success position-absolute m-3">-@product.DiscountPercentage%</span>
+                        <a class="btn-wishlist bi bi-heart" style="font-size: 24px"></a>
+                        <img src="images/top-img1.jpg" class="product-image" />
+
+                        <h6 class="fw-bold text-truncate mt-3">@product.ProductName</h6>
+                        <div class="mt-2 d-flex gap-2">
+                            <h6 class="text-black-50 text-decoration-line-through">R @product.OldPrice</h6>
+                            <h6 class="text-black">R @product.Price</h6>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="text-center">
+        Page
+        @Html.DropDownList("Page", new SelectList(listNum), htmlAttributes: new { @class = "p-1", id = "Page", onchange = "pageChange()" })
+        of @ViewBag.Products.PageCount
+        @*Html.PagedListPager((IPagedList)ViewBag.Products, page => Url.Action("", new { page, size = 1 }))*@
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+        window.onload = function(){
+            $('#sortBy').val(@sort).attr("selected", "selected");
+        }
+
+        function pageChange(){
+            var num = $('#Page').val();
+            var sort = $('#sortBy').val();
+
+            window.location.href = "/products?" + "page="+num + "&sort=" + sort;
+        }
+
+        function sortChange(){
+            var sort = $('#sortBy').val();
+
+            window.location.href = "/products?" + "&sort=" + sort;
+        }
+    </script>
+}
+
+@* <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
@@ -110,4 +205,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table> *@

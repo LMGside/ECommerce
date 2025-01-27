@@ -51,5 +51,19 @@ namespace ECommerce.Repositories
 
             return products;
         }
+
+        public async Task<IEnumerable<Product>> GetProductsByPrice(int order)
+        {
+            if(order == 1) //Low to High
+            {
+                var products = await _db.Products.OrderBy(a => a.Price).ToListAsync();
+                return products;
+            }
+            else // High to Low
+            {
+                var products = await _db.Products.OrderByDescending(a => a.Price).ToListAsync();
+                return products;
+            }
+        }
     }
 }

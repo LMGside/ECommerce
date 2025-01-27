@@ -7,7 +7,7 @@
 
 input[type="text"], input[type="number"], input[type="time"], input[type="password"], input[type="email"], input[type="tel"], textarea {
     width: 100%;
-    border: 1px solid #000000;
+    border: 1px solid rgb(213 217 222);
     margin: 0.5rem 0rem;
     padding: 0.5rem 1rem;
     border-radius: 1.5rem;

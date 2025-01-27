@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<style>
+    .d-flex i{
+        background-color: #00adb4;
+        border-radius: 50%;
+        font-size: 24px;
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        line-height: 50px;
+    }
+
+    input {
+        border-radius: 0px !important;
+    }
+
+    .form-btn{
+        background: #00adb4;
+        color: #fff;
+    }
+</style>
+
+<partial name="_PageHeader" />
+
+<div style="padding-top: 40px; padding-bottom: 40px; border-bottom: 2px solid #e0f0f0">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-12">
+                <div class="d-flex gap-1">
+                    <i class="bi bi-envelope" aria-hidden="true"></i>
+                    <div class="align-content-end">
+                        <p>info@bank101.co.za</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="d-flex gap-1">
+                    <i class="bi bi-phone" aria-hidden="true"></i>
+                    <div class="align-content-end">
+                        <p>081 208 9445</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="" style="margin-bottom: 20px">
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-8 col-sm-10">
+                <div style="padding-top: 20px">
+                    <form method="POST" action="form-to-email.php">
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <span class="form-label">First Name</span>
+                                <input id="name" class="form-control form-space" type="text"
+                                       placeholder="First Name" name="name">
+                            </div>
+                            <div class="col-6">
+                                <span class="form-label">Last Name</span>
+                                <input class="form-control form-space" type="text" placeholder="Last Name"
+                                       name="surname">
+                            </div>
+
+                            <div class="col-12">
+                                <span class="form-label">E-mail</span>
+                                <input class="form-control form-space" type="email"
+                                       placeholder="Your E-mail Address" name="email">
+                            </div>
+
+                            <div class="col-12">
+                                <span class="form-label">Number</span>
+                                <span style="color: red; display: none" id="spanNum">* Required</span>
+                                <input class="form-control form-space" type="text" placeholder="Your Phone Number"
+                                       name="phone">
+                            </div>
+
+                            <div class="col-12">
+                                <span class="form-label">Message</span>
+                                <textarea class="form-control form-space" type="text" placeholder="Enter Message"
+                                          rows="4" maxlength="300" name="message"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <input type="submit" value="Send Message" class="btn form-btn" name="submit">
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

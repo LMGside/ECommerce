@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ECommerce.Data;
 using ECommerce.Models;
+using X.PagedList.Mvc;
+using ECommerce.Repositories;
+using X.PagedList.Extensions;
 
 namespace ECommerce.Controllers
 {
@@ -14,18 +17,43 @@ namespace ECommerce.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHomeRepository _homeRepository;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, IHomeRepository homeRepository)
         {
             _context = context;
+            _homeRepository = homeRepository;
         }
 
         // GET: Products
         [Route("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int sort)
         {
-            var applicationDbContext = _context.Products.Include(p => p.SubCategory);
-            return View(await applicationDbContext.ToListAsync());
+            /*var applicationDbContext = _context.Products.Include(p => p.SubCategory);
+            return View(await applicationDbContext.ToListAsync());*/
+            IEnumerable<Product> product;
+
+            if(sort == 0)
+            {
+                product = await _homeRepository.GetNewlyAddedProducts();
+            }
+            else
+            {
+                product = await _homeRepository.GetProductsByPrice(sort);
+            }
+
+            var list = product.ToPagedList(page ?? 1, 1);
+
+            ViewBag.Products = list;
+            ViewBag.Sort = sort;
+
+            return View();
+        }
+
+        [Route("products/{id?}")]
+        public async Task<IActionResult> ProductDetails(int? id)
+        {
+            return View();
         }
 
         // GET: Products/Details/5

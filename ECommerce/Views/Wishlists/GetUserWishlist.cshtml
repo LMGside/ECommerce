@@ -16,41 +16,69 @@
     </div>
 </section>
 
-@if(Model.Count() > 0)
-{
-    <div class="bg-light py-3 px-5">
-        <p>THERE IS A WISH LIST</p>
-    </div>
-}
-else
-{
-    <div class="bg-light py-3 px-5">
-        <p>THERE IS NO WISH LIST</p>
-    </div>
-}
-
-<div class="mt-5">
-    <div class="container">
-        <div class="py-3 px-5 bg-opacity-50 bg-warning d-flex gap-2">
-            <i class="bi bi-lock" style="font-size: 30px"></i>
-            <div class="align-content-center">
-                <span>
-                    You are not logged on. To view your wishlist, login
-                    <a asp-area="Identity" asp-page="/Account/Login">here</a>
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="container">
-    <div class="mt-5 card rounded-2 bg-black bg-opacity-10">
-        <div class="card-body align-content-center" style="height: 50vh">
-            <div class="text-center d-flex flex-column gap-3">
-                <h2>Wish list empty</h2>
-                <p>Start planning what gifts you'd want!</p>
-                <a class="mt-2 btn btn-primary m-auto" asp-area="" asp-controller="Home" asp-action="Index">Continue Shopping</a>
+    @if(!User.Identity.IsAuthenticated)
+    {
+        <div class="mt-5">
+            <div class="py-3 px-5 bg-opacity-50 bg-warning d-flex gap-2">
+                <i class="bi bi-lock" style="font-size: 30px"></i>
+                <div class="align-content-center">
+                    <span>
+                        You are not logged on. To view your wishlist, login
+                        <a asp-area="Identity" asp-page="/Account/Login">here</a>
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
+    }
+
+    @if(Model.Count() > 0)
+    {
+        <div class="mt-5 card rounded-2 bg-black bg-opacity-10">
+            <div class="card-body align-content-center" style="height: 50vh;">
+                <ul class="list-group">
+                    @foreach(var wish in Model){
+                        <li class="list-group-item list-group-item-action">
+                        <div class="row bg-black bg-opacity-10">
+                            <div class="col-3 align-content-center">
+                                <img class="w-100" src="~/images/top-img2.jpg"/>
+                            </div>
+                            <div class="col-lg-7 col-md-5 col-sm-4 p-2">
+                                <h4 class="fw-bold text-truncate">HEADER</h4>
+                                <p class="mt-2 text-truncate">details</p>
+                                <p class="mt-2 text-opacity-25">In Stock</p>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-5 p-2">
+                                <div class="d-flex flex-row justify-content-between">
+                                    <p class="fw-bold">R150</p>
+                                    <button class="btn btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                                <button class="btn btn-success mt-2">
+                                    <i class="bi bi-cart"></i>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    }
+                    
+                </ul>
+            </div>
+        </div>
+        
+    }
+    else
+    {
+        <div class="mt-5 card rounded-2 bg-black bg-opacity-10">
+            <div class="card-body align-content-center" style="height: 50vh">
+                <div class="text-center d-flex flex-column gap-3">
+                    <h2>Wish list empty</h2>
+                    <p>Start planning what gifts you'd want!</p>
+                    <a class="mt-2 btn btn-primary m-auto" asp-area="" asp-controller="Home" asp-action="Index">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

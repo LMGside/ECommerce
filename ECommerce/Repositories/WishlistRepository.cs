@@ -134,8 +134,12 @@ namespace ECommerce.Repositories
             {
                 var noUser = new Wishlist()
                 {
-                    UserId = ""
+                    UserId = "",
+                    ProductId = 2,
+                    CreatedDate = DateTime.Now
                 };
+                
+                wishlists.Add(noUser);
                 wishlists.Add(noUser);
 
                 return wishlists;
