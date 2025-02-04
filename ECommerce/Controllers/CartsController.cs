@@ -37,6 +37,17 @@ namespace ECommerce.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> AddItem(int productId, int qty = 1, int redirect = 0)
+        {
+            var cartCount = await _repository.AddItem(productId, qty);
+            if(redirect == 0)
+            {
+                return Ok(cartCount);
+            }
+
+            return RedirectToAction("all");
+        }
+
         [Route("all")]
         public async Task<IActionResult> GetUserCart()
         {

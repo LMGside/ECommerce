@@ -1,34 +1,95 @@
-﻿@model ECommerce.Models.Product
+﻿@model ECommerce.Models.DisplayModels.Details
 
 @{
-    ViewData["Title"] = Model.ProductName;
+    ViewData["Title"] = Model.Product.ProductName;
 }
+
+<style>
+    /* The grid: Four equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 10px;
+    }
+
+    /* Style the images inside the grid */
+    .column img {
+        opacity: 0.8;
+        cursor: pointer;
+    }
+
+    .column img:hover {
+        opacity: 1;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Expanding image text */
+    #imgtext {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        color: white;
+        font-size: 20px;
+    }
+
+    /* Closable button inside the expanded image */
+    .closebtn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+    }
+</style>
 
 <div class="container">
     <div class="mt-4 mb-5 d-flex flex-row gap-3">
         <a class="text-decoration-none fw-bolder text-black" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
         / 
-        <label>@Model.ProductName</label>
+        <label>@Model.Product.ProductName</label>
     </div>
     <div class="row gx-4 gx-lg-5 align-items-center">
         <div class="col-md-6">
-            <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="...">
-            <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                View More
-            </button>
+            <img id="expandedImg" class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="...">
+            <div class="row">
+                @foreach(var image in Model.Images){
+                    <div class="column">
+                        <img src="@image.ImageUrl" alt="Image" style="width:100%" onclick="myFunction(this);">
+                    </div>
+                }
+                <div class="column">
+                    <img src="~/images/top-img1.jpg" alt="Nature" style="width:100%" onclick="myFunction(this);">
+                </div>
+                <div class="column">
+                    <img src="~/images/top-img2.jpg" alt="Snow" style="width:100%" onclick="myFunction(this);">
+                </div>
+                <div class="column">
+                    <img src="~/images/top-img3.jpg" alt="Mountains" style="width:100%" onclick="myFunction(this);">
+                </div>
+                <div class="column">
+                    <img src="~/images/top-img6.jpg" alt="Lights" style="width:100%" onclick="myFunction(this);">
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
-            <h1 class="display-5 fw-bolder">@Model.ProductName</h1>
+            <h1 class="display-5 fw-bolder">@Model.Product.ProductName</h1>
             <div class="fs-5 mb-5">
-                @if(Model.OnSale){
-                    <span class="text-decoration-line-through">R @Model.OldPrice</span>
+                @if(Model.Product.OnSale){
+                    <span class="text-decoration-line-through">R @Model.Product.OldPrice</span>
                 }
-                <span>R @Model.Price</span>
+                <span>R @Model.Product.Price</span>
             </div>
-            <p class="lead">@Model.LongDescription</p>
+            <p class="lead">@Model.Product.LongDescription</p>
             <div class="d-flex">
-                <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem">
-                <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 5rem">
+                <button class="btn btn-outline-dark flex-shrink-0" type="button" onclick="add(@Model.Product.ProductId)">
                     <i class="bi-cart-fill me-1"></i>
                     Add to cart
                 </button>
@@ -36,3 +97,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function myFunction(imgs) {
+        var expandImg = document.getElementById("expandedImg");
+        expandImg.src = imgs.src;
+        expandImg.parentElement.style.display = "block";
+    }
+</script>

@@ -10,6 +10,8 @@ using ECommerce.Models;
 using X.PagedList.Mvc;
 using ECommerce.Repositories;
 using X.PagedList.Extensions;
+using System.Runtime.CompilerServices;
+using ECommerce.Models.DisplayModels;
 
 namespace ECommerce.Controllers
 {
@@ -18,11 +20,13 @@ namespace ECommerce.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHomeRepository _homeRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductsController(ApplicationDbContext context, IHomeRepository homeRepository)
+        public ProductsController(ApplicationDbContext context, IHomeRepository homeRepository, IProductRepository productRepository)
         {
             _context = context;
             _homeRepository = homeRepository;
+            _productRepository = productRepository;
         }
 
         // GET: Products
@@ -53,6 +57,7 @@ namespace ECommerce.Controllers
         [Route("{id?}")]
         public async Task<IActionResult> ProductDetails(int? id)
         {
+            Details productFull = new Details();
             if (id == null)
             {
                 return NotFound();
@@ -61,12 +66,17 @@ namespace ECommerce.Controllers
             var product = await _context.Products
                 .Include(p => p.SubCategory)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
+
+            var productImages = await _productRepository.GetProductImages(id);
+            productFull.Images = productImages;
+
             if (product == null)
             {
                 return NotFound();
             }
+            productFull.Product = product;
 
-            return View(product);
+            return View(productFull);
         }
 
         // GET: Products/Details/5
