@@ -18,5 +18,14 @@ namespace ECommerce.Repositories
 
             return products;
         }
+
+        public async Task<IEnumerable<Product>> GetProductList(int page, int pageSize = 5)
+        {
+            IEnumerable<Product> prod = await _db.Products.Skip(page*pageSize).Take(pageSize)
+                .Include(a => a.ProductImages)
+                .ToListAsync();
+
+            return prod;
+        }
     }
 }

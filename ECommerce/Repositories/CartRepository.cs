@@ -11,6 +11,9 @@ namespace ECommerce.Repositories
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        public const string CartSessionKey = "CartId";
+
+        public string ShoppingCartId { get; set; }
 
         public CartRepository(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
@@ -19,9 +22,29 @@ namespace ECommerce.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public string GetCartId()
+        {
+            if (_httpContextAccessor.HttpContext.Session.Get(CartSessionKey) == null)
+            {
+                if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.User.Identity.Name))
+                {
+                    _httpContextAccessor.HttpContext.Session.SetString(CartSessionKey, _httpContextAccessor.HttpContext.User.Identity.Name);
+                    //HttpContext.Current.User.Identity.Name;
+                }
+                else
+                {
+                    // Generate a new random GUID using System.Guid class.     
+                    Guid tempCartId = Guid.NewGuid();
+                    _httpContextAccessor.HttpContext.Session.SetString(CartSessionKey, tempCartId.ToString());
+                }
+            }
+            return _httpContextAccessor.HttpContext.Session.Get(CartSessionKey).ToString();
+        }
+
         public async Task<int> AddItem(int productId, int quantity)
         {
             string userID = GetUserId();
+            string sc = GetCartId();
             //using var transaction = _db.Database.BeginTransaction();
             try
             {
@@ -30,19 +53,11 @@ namespace ECommerce.Repositories
                 {
                     throw new Exception("User Is not Found");
                 }
-                var cart = await GetShoppingCart(userID);
-                if (cart == null)
-                {
-                    cart = new ShoppingCart
-                    {
-                        UserId = userID
-                    };
-                    _db.ShoppingCarts.Add(cart);
-                }
-                _db.SaveChanges();
+
+                string ShoppingCart = GetCartId();
 
                 // Cart Details
-                var cartItem = _db.Carts.FirstOrDefault(a => a.ShoppingCartId == cart.ShoppingCartId && a.ProductId == productId);
+                var cartItem = _db.Carts.FirstOrDefault(a => a.ShoppingCartId == ShoppingCart && a.ProductId == productId);
                 var productItem = _db.Products.FirstOrDefault(s => s.ProductId == productId);
 
                 if (cartItem != null)
@@ -62,7 +77,7 @@ namespace ECommerce.Repositories
                     {
                         ProductId = productId,
                         Quantity = quantity,
-                        ShoppingCartId = cart.ShoppingCartId,
+                        ShoppingCartId = ShoppingCart,
                         CreatedDate = DateTime.Now,
                         UserId = userID
                     };
@@ -145,12 +160,12 @@ namespace ECommerce.Repositories
 
         }
 
-        public async Task<ShoppingCart> GetUserCart()
+        public async Task<Cart> GetUserCart()
         {
             var userId = GetUserId();
             if (userId == null)
             {
-                var noUser = new ShoppingCart()
+                var noUser = new Cart()
                 {
                     UserId = ""
                 };
@@ -158,10 +173,9 @@ namespace ECommerce.Repositories
                 return noUser;
             }
 
-            var shoppingCart = await _db.ShoppingCarts
+            var shoppingCart = await _db.Carts
                 .Include(a => a.ApplicationUser)
-                .Include(a => a.Carts)
-                .ThenInclude(a => a.Product)
+                .Include(a => a.Product)
                 .ThenInclude(a => a.SubCategory)
                 .Where(a => a.UserId == userId).FirstOrDefaultAsync();
 
@@ -210,9 +224,9 @@ namespace ECommerce.Repositories
                 userId = GetUserId();
             }
 
-            var data = await (from shoppingCart in _db.ShoppingCarts
-                              join cart in _db.Carts
-                              on shoppingCart.ShoppingCartId equals cart.ShoppingCartId
+            string shoppingCart = GetCartId();
+
+            var data = await (from cart in _db.Carts
                               where cart.UserId == userId
                               select new { cart.ShoppingCartId }).ToListAsync();
 
@@ -298,9 +312,9 @@ namespace ECommerce.Repositories
             }
         }
 
-        public async Task<ShoppingCart> GetShoppingCart(string userId)
+        public async Task<Cart> GetShoppingCart(string userId)
         {
-            var result = await _db.ShoppingCarts.FirstOrDefaultAsync(x => x.UserId == userId);
+            var result = await _db.Carts.FirstOrDefaultAsync(x => x.UserId == userId);
             return result;
         }
 

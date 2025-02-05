@@ -43,5 +43,7 @@ namespace ECommerce.Models
 
         [ValidateNever]
         public SubCategory SubCategory { get; set; }
+        [ValidateNever]
+        public ICollection<ProductImage> ProductImages { get; set; }
     }
 }

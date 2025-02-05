@@ -6,11 +6,11 @@ namespace ECommerce.Repositories
     {
         Task<int> AddItem(int productId, int quantity);
         Task<int> RemoveItem(int productId);
-        Task<ShoppingCart> GetUserCart();
+        Task<Cart> GetUserCart();
         Task<Order> UsersLastOrder();
         Task<Order> GetUsersOrder(string orderID);
         Task<int> GetCartItemCount(string userId = "");
         Task<bool> DoCheckout();
-        Task<ShoppingCart> GetShoppingCart(string userId);
+        Task<Cart> GetShoppingCart(string userId);
     }
 }

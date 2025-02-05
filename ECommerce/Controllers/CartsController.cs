@@ -33,10 +33,12 @@ namespace ECommerce.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Carts.Include(c => c.ApplicationUser).Include(c => c.Product).Include(c => c.ShoppingCart);
+            var applicationDbContext = _context.Carts.Include(c => c.ApplicationUser)
+                .Include(c => c.Product);
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [Route("")]
         public async Task<IActionResult> AddItem(int productId, int qty = 1, int redirect = 0)
         {
             var cartCount = await _repository.AddItem(productId, qty);
